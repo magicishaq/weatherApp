@@ -1,23 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import Search from './Components/Search'; 
+
+import {useState, useEffect} from 'react'; 
 
 function App() {
+//set the search state
+//set the search reults options from  list #
+const [city, setCity] = useState('ISHAQ'); 
+const [cities, setCities] = useState([]); 
+
+
+
+async function getData (cityname) {
+
+const API = `6b37f526109787fa0dc324bcc52c5d5c`
+let url = `api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API}`
+
+debugger; 
+const results =  await fetch(url)
+const json = await results.json(); 
+debugger; 
+setCities(json); 
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="grid">
+    <header className="heading">
+      <h1> My Weather App </h1>
+    </header>
+    <aside className="searchbar">
+      <Search data={city} />
+      <button onClick={(event) => {setCity(event.target.value)} }> Search here ! </button> 
+     </aside> 
+    <article className="results"> 
+      Results
+    </article> 
+    <footer className="footer">
+      By Ishaq Khan
+    </footer>  
     </div>
   );
 }

@@ -1,3 +1,9 @@
+# Weather app using OpenWeather API and react core framework
+Search a destinaton and watch the API show the weather of that place :)
+Below is the list of instructions to start coding :) 
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
