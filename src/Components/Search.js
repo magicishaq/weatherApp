@@ -2,8 +2,8 @@ import {useState, useEffect, useRef} from 'react';
 
 const Search = ({data}) => {
 const [city, setCity] = useState(data); 
-const [list, setList] = useState({}); 
-let currentFocus = useRef(null); 
+const [list, setList] = useState([]); 
+let currentFocus = useRef(); 
 
 useEffect(() => { getList()}, []); 
 //popluate list of cities
@@ -25,7 +25,7 @@ function setUpSearch (e) {
     /*close any already open lists of autocompleted values*/
     closeAllLists();
     if (!val) { return false;}
-    currentFocus = -1;
+    currentFocus.current = -1;
     /*create a DIV element that will contain the items (values):*/
     a = document.createElement("DIV");
     a.setAttribute("id", inp.id + "autocomplete-list");
@@ -67,13 +67,62 @@ function setUpSearch (e) {
       }
 }
 
+function onKeyDown (e) {
+  const inp = document.getElementById('myInput'); 
+  var x = document.getElementById(inp.id + "autocomplete-list");
+  if (x) x = x.getElementsByTagName("div");
+  if (e.keyCode == 40) {
+    /*If the arrow DOWN key is pressed,
+    increase the currentFocus variable:*/
+    currentFocus.current ++;
+    /*and and make the current item more visible:*/
+    addActive(x);
+  } else if (e.keyCode == 38) { //up
+    /*If the arrow UP key is pressed,
+    decrease the currentFocus variable:*/
+    currentFocus.current --;
+    /*and and make the current item more visible:*/
+    addActive(x);
+  } else if (e.keyCode == 13) {
+    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+    e.preventDefault();
+    if (currentFocus.current > -1) {
+      /*and simulate a click on the "active" item:*/
+      if (x) { 
+        setCity(x[currentFocus.current].textContent)
+        console.log('hello world')
+        // x[currentFocus.current].click();
+        // setUpSearch(); 
+      }
+    }
+  }
+};
+function addActive(x) {
+/*a function to classify an item as "active":*/
+if (!x) return false;
+/*start by removing the "active" class on all items:*/
+removeActive(x);
+if (currentFocus.current >= x.length) currentFocus = 0;
+if (currentFocus.current < 0) currentFocus = (x.length - 1);
+/*add class "autocomplete-active":*/
+x[currentFocus.current].classList.add("autocomplete-active");
+}
+function removeActive(x) {
+/*a function to remove the "active" class from all autocomplete items:*/
+for (var i = 0; i < x.length; i++) {
+  x[i].classList.remove("autocomplete-active");
+}
+}
 
 return(
-    <form autoComplete="off" action="/action_page.php">
+    <form autoComplete="off">
     <div className="autocomplete" style={{'width':'300px'}}>
-    <input id= "myInput" onChange={setUpSearch} onBlur={setUpSearch} value={city} /> 
+    {/* <input id= "myInput" onChange={setUpSearch} onBlur={setUpSearch} value={city} onKeyDown={onKeyDown} />  */}
+    <input id= "myInput" onChange={(e) => setCity(e.target.value)}  value={city}  /> 
+    
+    {list.filter(l => l.includes(city)).map((item,id) => (<div key={id}> {item} </div>))}
+
     </div>
-    <input type="submit"/>
   </form>
 )
 }

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 function App() {
   //set the search state
   //set the search reults options from  list #
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState('england');
   const [cities, setCities] = useState([]);
   
 
@@ -16,6 +16,7 @@ function App() {
     const results = await fetch(url)
     const json = await results.json();
     setCities(json);
+    console.log(json)
   }
 
   return (
@@ -25,7 +26,7 @@ function App() {
       </header>
       <aside className="searchbar">
         <Search data={city} />
-        <button onClick={(event) => { setCity(event.target.value) }}> Search here ! </button>
+        <input type="submit"  onClick={() => (getData(city))}/> 
       </aside>
       <article className="results">
         Results
