@@ -1,11 +1,17 @@
 import {useState, useEffect, useRef} from 'react'; 
 
 const Search = ({data}) => {
-const [city, setCity] = useState(data); 
+const [city, setCity] = useState(''); 
 const [list, setList] = useState([]); 
+const [show, setShow] = useState(false); 
 let currentFocus = useRef(); 
 
 useEffect(() => { getList()}, []); 
+useEffect(() => {
+  if(city.length >= 1 ){
+    setShow(true)
+  }
+}, [city])
 //popluate list of cities
 async function getList () {
     const url = 'https://countriesnow.space/api/v0.1/countries'
@@ -15,7 +21,14 @@ async function getList () {
     setList(listOfAllCities);  
 }
 
+function handleClick (e) {
+  
+  setCity(e.target.value)
+  
+  
+}
 
+ 
 
 function setUpSearch (e) { 
    //add the auto complete to the feilds
@@ -66,7 +79,9 @@ function setUpSearch (e) {
         }
       }
 }
+function keyhandler (e) {
 
+}
 function onKeyDown (e) {
   const inp = document.getElementById('myInput'); 
   var x = document.getElementById(inp.id + "autocomplete-list");
@@ -113,15 +128,16 @@ for (var i = 0; i < x.length; i++) {
   x[i].classList.remove("autocomplete-active");
 }
 }
-
+let filterdList = show ? list.filter(item => item.includes(city)) : []; 
 return(
     <form autoComplete="off">
+      
     <div className="autocomplete" style={{'width':'300px'}}>
     {/* <input id= "myInput" onChange={setUpSearch} onBlur={setUpSearch} value={city} onKeyDown={onKeyDown} />  */}
-    <input id= "myInput" onChange={(e) => setCity(e.target.value)}  value={city}  /> 
-    
-    {list.filter(l => l.includes(city)).map((item,id) => (<div key={id}> {item} </div>))}
-
+    <input id= "myInput" onKeyDown={onKeyDown} onChange={handleClick} onBlur={(e) => setCity('')} value={city} /> 
+    < div id="myInputautocomplete-list" className="autocomplete-items">
+    {filterdList.slice(0, 5).map((item,id) => (<div  className="fList" data-id={id} key={id}> {item} <input type="hidden" value={item} /> </div>))}
+    </div>
     </div>
   </form>
 )
