@@ -1,9 +1,9 @@
-import {useState, useEffect, useRef, useContext} from 'react'; 
-import CityContext from '../contexts/CityContext';
+import {useState, useEffect, useRef} from 'react'; 
+
 
 
 const Search = () => {
-const [city, setCity] = useContext(CityContext);
+const [city, setCity] = useState('england');
 const [list, setList] = useState([]); 
 const [show, setShow] = useState(false); 
 let currentFocus = useRef(); 
@@ -83,7 +83,7 @@ setCity(e.target.textContent.trim())
 }
 let filterdList = show ? list.filter(item => item.toLowerCase().includes(city.toLocaleLowerCase())) : []; 
 return(   
-    <div className="autocomplete" style={{'width':'300px'}}>
+<div className="autocomplete" style={{'width':'300px'}}>
     <input id= "myInput" onKeyDown={onKeyDown} onChange={handleClick} onBlur={(e) => setShow(false)} value={city}  placeholder="Enter a city"/> 
     < div id="myInputautocomplete-list" className="autocomplete-items" onClick={clickHandlerItem} >
     {filterdList.slice(0, 5).map((item,id) => (<div  className="fList"  data-id={id} key={id} > {item} <input type="hidden" value={item} /> </div>))}
