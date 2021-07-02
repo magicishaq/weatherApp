@@ -1,16 +1,10 @@
-import {useEffect, useState} from 'react'; 
+import {useEffect, useState, useContext} from 'react'; 
+import CityContext from '../contexts/CityContext';
 
-
-const Results = ({cities}) => {
-const [show, setShow] = useState(false); 
-
-// useEffect(()=>{
-// if 
-// }, [])
-
-if(cities){
+const Results = ({search}) => {
+if(search){
 return(
-    <div>Yes{cities}</div>
+   <div> {search} </div> 
 )
 }else{
     return(
