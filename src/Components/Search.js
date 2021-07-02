@@ -1,7 +1,9 @@
-import {useState, useEffect, useRef} from 'react'; 
+import {useState, useEffect, useRef, useContext} from 'react'; 
+import CityContext from '../contexts/CityContext';
 
-const Search = ({data}) => {
-const [city, setCity] = useState(data); 
+
+const Search = () => {
+const [city, setCity] = useContext(CityContext);
 const [list, setList] = useState([]); 
 const [show, setShow] = useState(false); 
 let currentFocus = useRef(); 
@@ -34,29 +36,24 @@ function onKeyDown (e) {
   if(!city){
     return false; 
   }
-  if (x) x = x.getElementsByTagName("div");
-  // if(!city){
-  //   return false; 
-  // } 
-  if (e.keyCode == 40) {
-    /*If the arrow DOWN key is pressed,
-    increase the currentFocus variable:*/
+  if (x) x = x.getElementsByTagName("div");  
+  if (e.keyCode == 40) {   
     currentFocus.current ++;
-    /*and and make the current item more visible:*/
     addActive(x);
   } else if (e.keyCode == 38) { //up
-    /*If the arrow UP key is pressed,
-    decrease the currentFocus variable:*/
     currentFocus.current --;
-    /*and and make the current item more visible:*/
     addActive(x);
   } else if (e.keyCode == 13) {
-    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+   //enter key
     e.preventDefault();
     if (currentFocus.current > -1) {
-      /*and simulate a click on the "active" item:*/
+      //click on active
       if (x) { 
-        setCity(x[currentFocus.current].textContent.trim())
+        try{setCity(x[currentFocus.current].textContent.trim())
+        setTimeout(setShow(false), 1); 
+        }catch(e){
+         return false;  
+        }
       }
     }
   }
@@ -71,6 +68,7 @@ if (currentFocus.current < 0) currentFocus.current = (x.length - 1);
 /*add class "autocomplete-active":*/
 x[currentFocus.current].classList.add("autocomplete-active");
 
+
 }
 function removeActive(x) {
 /*a function to remove the "active" class from all autocomplete items:*/
@@ -81,20 +79,16 @@ for (var i = 0; i < x.length; i++) {
 
 function clickHandlerItem (e ){
 setCity(e.target.textContent.trim())
+//setShow(false); 
 }
 let filterdList = show ? list.filter(item => item.toLowerCase().includes(city.toLocaleLowerCase())) : []; 
-return(
-    <form autoComplete="off">
-      
+return(   
     <div className="autocomplete" style={{'width':'300px'}}>
-    {/* <input id= "myInput" onChange={setUpSearch} onBlur={setUpSearch} value={city} onKeyDown={onKeyDown} />  */}
-    <input id= "myInput" onKeyDown={onKeyDown} onChange={handleClick} onBlur={(e) => setCity('')} value={city} /> 
-    < div id="myInputautocomplete-list" className="autocomplete-items" >
-    {/* onMouseOver={clickHandlerItem} */}
-    {filterdList.slice(0, 5).map((item,id) => (<div  className="fList" data-id={id} key={id} > {item} <input type="hidden" value={item} /> </div>))}
+    <input id= "myInput" onKeyDown={onKeyDown} onChange={handleClick} onBlur={(e) => setShow(false)} value={city}  placeholder="Enter a city"/> 
+    < div id="myInputautocomplete-list" className="autocomplete-items" onClick={clickHandlerItem} >
+    {filterdList.slice(0, 5).map((item,id) => (<div  className="fList"  data-id={id} key={id} > {item} <input type="hidden" value={item} /> </div>))}
     </div>
     </div>
-  </form>
 )
 }
  export default Search; 
