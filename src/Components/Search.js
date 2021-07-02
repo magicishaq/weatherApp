@@ -49,7 +49,7 @@ const Search = () => {
     } else if (e.keyCode == 13) {
       //enter key
       e.preventDefault();
-      setSearch(city);
+      submitForm(e); 
       if (currentFocus.current > -1) {
         //click on active
         if (x) {
@@ -83,12 +83,11 @@ const Search = () => {
   function clickHandlerItem(e) {
     setCity(e.target.textContent.trim());
     submitForm(e);
-    //setShow(false);
-  }
 
+  }
   function submitForm (ev)  {
     ev.preventDefault();
-    setSearch(city);
+    setSearch(ev.target.textContent.trim());
     setShow(false); 
   }
   let filterdList = show
