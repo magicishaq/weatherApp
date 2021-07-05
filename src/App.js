@@ -11,7 +11,7 @@ function App() {
   //set the search state
   //set the search reults options from  list 
   ///theme
-  const search = useState('england'); 
+  const search = useState(''); 
   
   return (
     <CityContext.Provider value={search}>
