@@ -80,14 +80,15 @@ const Search = () => {
     }
   }
 
-  function clickHandlerItem(e) {
+  function clickHandlerItem(e) { 
+
     setCity(e.target.textContent.trim());
-    submitForm(e);
+    //setSearch(city);
 
   }
   function submitForm (ev)  {
     ev.preventDefault();
-    setSearch(ev.target.textContent.trim());
+    setSearch(city);
     setShow(false); 
   }
   let filterdList = show
