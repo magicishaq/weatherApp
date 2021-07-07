@@ -30,6 +30,7 @@ const Search = () => {
   function handleClick(e) {
     setCity(e.target.value);
     currentFocus.current = -1;
+    // setList([]); 
   }
 
   function onKeyDown(e) {
@@ -79,11 +80,16 @@ const Search = () => {
       x[i].classList.remove("autocomplete-active");
     }
   }
-
+  let filterdList = show
+  ? list.filter((item) =>
+      item.toLowerCase().includes(city.toLocaleLowerCase())
+    )
+  : [];
   function clickHandlerItem(e) { 
 
     setCity(e.target.textContent.trim());
     //setSearch(city);
+    submitForm(e);  
 
   }
   function submitForm (ev)  {
@@ -91,11 +97,7 @@ const Search = () => {
     setSearch(city);
     setShow(false); 
   }
-  let filterdList = show
-    ? list.filter((item) =>
-        item.toLowerCase().includes(city.toLocaleLowerCase())
-      )
-    : [];
+  
   return (
     <form
       autoComplete="off"

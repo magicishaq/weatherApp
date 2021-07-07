@@ -5,8 +5,13 @@ const Results = ({ search }) => {
   const [cities, setCities] = useState([]);
   const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    getData(search[0]).then((json) => (setCities(json))).catch(error => console.log(error))
+  useEffect(() => { 
+    if(search[0].length > 0){
+    getData(search[0]).then((json) => (setCities(json))).then(() => setShow(true)).catch(error => setShow(false))
+    }else{
+      console.log('empty')
+      setShow(false)
+    }
     console.log(cities)
   },[search]);
 
@@ -19,25 +24,36 @@ const Results = ({ search }) => {
       if (result.status === 200) {
         const json = await result.json();
         return json; 
+      }else{
+        return {error: true}
       }
+
     } catch (ex) {
       return { success: false, error: ex.message };
+      
     }
   }
-
+if(show  && !cities.error){
   return (
-    <div>hello world </div> 
+    <ul>
+    <li>  The temprature of {search} { cities.weather[0].main}  Degrees Celisus </li>
+        <li> {cities.weather[0].description} </li>
+        <li> {cities.main.feels_like} </li>
+        <li>  humidity is : {cities.main.humidity} </li> 
+        <li> Minimum temprature is :  {cities.main.temp_min} </li> 
+        <li> Maximum tempprature is : {cities.main.tem_max} </li>
+        <li>  The wind speed is: {cities.wind.speed} mph </li>
+    </ul>
   )
+}else{
+  return(
+    <h1> hello </h1>
+  )
+}
 
  
-/* {cities.data.weather[0].main}
-        {cities.data.weather[0].description}
-        {cities.data.main.feels_like}
-        {cities.data.main.humidity}
-        {cities.data.main.temp_min}
-        {cities.data.main.tem_max}
-        {cities.data.wind.speed} mph
-        {cities} */
+/*      
+         */
 };
 
 export default Results;
