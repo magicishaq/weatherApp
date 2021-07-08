@@ -1,3 +1,54 @@
 .grid{
   display: grid; 
+  grid-gap: 20px; 
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 2fr 2fr 1fr; 
+  grid-template-areas: "heading heading heading"
+  ". searchbar ."
+  "results results results"
+  "footer footer footer" ;
+
+  height: 100vh; 
+}
+
+.heading{
+  grid-area: heading; 
+  color: #fff;
+  align-self: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: dodgerblue; 
+}
+
+h1{
+  text-align: center; 
+}
+
+.searchbar{
+  grid-area: searchbar; 
+}
+
+.results{
+  grid-area: results; 
+}
+
+ul{
+  display: flex;
+  flex-direction: column; 
+  list-style: none; 
+}
+
+
+.footer{
+  grid-area: footer; 
+  background: dodgerblue;
+    text-align: center;
+    align-self: center;
+    height: 100px;
+    margin: auto;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
