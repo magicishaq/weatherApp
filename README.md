@@ -1,6 +1,8 @@
 # Weather app using OpenWeather API and react core framework
 Search a destinaton and watch the API show the weather of that place :)
 Below is the list of instructions to start coding :) 
+Go to: 
+https://magicishaq.github.io/weatherApp/
 
 
 
