@@ -20,9 +20,10 @@ const Results = ({ search }) => {
 
   async function getData(cityname) {
     const API = `2191268cc6ab9899560808af14219013`;
+    const units = 'metric';  
     try {
       const result = await fetch(
-        `//api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API}`
+        `//api.openweathermap.org/data/2.5/weather?q=${cityname}&appid=${API}&units=${units}`
       );
       if (result.status === 200) {
         const json = await result.json();
